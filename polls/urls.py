@@ -16,6 +16,8 @@ urlpatterns =[
 	#esto es para raiz/polls/5/vote
 	url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
 	#esto es para api
-	url(r'^kpis/(?P<client>.+)/(?P<from_date>.+)/(?P<to_date>.+)/$', views.kpis, name='kpis')
+	url(r'^kpis/(?P<client>.+)/(?P<from_date>.+)/(?P<to_date>.+)/$', views.kpis_todas, name='kpis_todas'),
+	#esto es para una sola sucursal.
+	url(r'^kpis_suc/(?P<client>.+)/(?P<suc>.+)/(?P<from_date>.+)/(?P<to_date>.+)/$', views.kpis_suc, name='kpis_sucursal')
 ]
 

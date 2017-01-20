@@ -48,12 +48,19 @@ def vote(request, question_id):
 
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
-def kpis(request,client,from_date,to_date):
+def kpis_todas(request,client,from_date,to_date):
 	url_api = "http://api1.klustera.com:8000/visitantes_dia?client={}&from={}&to={}".format(client,from_date,to_date)
-	#df = pd.read_json(url_api)
 	response = requests.get(url_api).json()
-	#results = response['results'][:5]
-	df = pd.DataFrame(response['results']).to_html()
+	df = pd.DataFrame(response['results'])
+	df = df[['visitantes','paseantes','visitantes_primera_vez','visitantes_recurrentes']].sum().to_json()
+	return HttpResponse(df)
+
+def kpis_suc(request,client,suc,from_date,to_date):
+	url_api = "http://api1.klustera.com:8000/visitantes_dia?client={}&from={}&to={}".format(client,from_date,to_date)
+	response = requests.get(url_api).json()
+	df = pd.DataFrame(response['results'])
+	df = df.loc[df['sucursal'] == suc]
+	df = df[['visitantes','paseantes','visitantes_primera_vez','visitantes_recurrentes']].sum().to_json()
 	return HttpResponse(df)
 	 
 	 #url_api = "http://api1.klustera.com:8000/visitantes_dia?client=Pacifico&from=2016-11-24&to=2016-12-31"
